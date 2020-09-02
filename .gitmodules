@@ -1,0 +1,15 @@
+[submodule "examples/nokia5111-lcd-spi/other-works/ST7565-LCD"]
+	path = examples/nokia5111-lcd-spi/other-works/ST7565-LCD
+	url = https://github.com/adafruit/ST7565-LCD
+[submodule "examples/l29ah/max31855-libmpsse"]
+	path = examples/l29ah/max31855-libmpsse
+	url = https://github.com/l29ah/max31855-libmpsse
+[submodule "examples/l29ah/ssd1306-libmpsse"]
+	path = examples/l29ah/ssd1306-libmpsse
+	url = https://github.com/l29ah/ssd1306-libmpsse
+[submodule "examples/l29ah/st7567-libmpsse"]
+	path = examples/l29ah/st7567-libmpsse
+	url = https://github.com/l29ah/st7567-libmpsse
+[submodule "include/libmpsse"]
+	path = include/libmpsse
+	url = https://github.com/devttys0/libmpsse
