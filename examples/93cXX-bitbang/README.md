@@ -9,6 +9,8 @@
 	erase erase region. if 0 max then fast erase all cmd is used. Vcc should be 5v!
 	write-disable temporary prevent future writing or erasing
 		any modification operation unlock it automatically
+
+	accepted env vars FT232__DEV_VID=num FT232__DEV_PID=num FT232__BAUDRATE=num
 ```
 
 
