@@ -19,6 +19,8 @@
 #define MEM_ORG         0              //存储器的数据位宽，0为8位，1为16位  与硬件引脚ORG对应
 
 
+extern unsigned AT93CXX__addrWidth;
+
 
 extern void AT93CXX_SPI_PORT_INIT(void);        //AT93CXX端口初始化
 

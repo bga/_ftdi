@@ -4,6 +4,18 @@
 
 #include <stdio.h>
 
+unsigned AT93CXX__addrWidth;
+
+#if MEM_ORG
+	#define AT93CXX__MAKE_ADDR(cmdArg, addrArg) (((unsigned short)((cmdArg) | 0x04) << (AT93CXX__addrWidth - 1)) | (addrArg))
+	#define AT93CXX__MAKE_ADDR_FIXED(cmdArg, addrArg) (((unsigned short)((cmdArg) | 0x04) << (AT93CXX__addrWidth - 1)) | ((addrArg) << 1))
+	
+#else
+	#define AT93CXX__MAKE_ADDR(cmdArg, addrArg) (((unsigned short)((cmdArg) | 0x04) << (AT93CXX__addrWidth - 0)) | (addrArg))
+	#define AT93CXX__MAKE_ADDR_FIXED(cmdArg, addrArg) (((unsigned short)((cmdArg) | 0x04) << (AT93CXX__addrWidth - 0)) | (addrArg))
+#endif
+
+
 //*************************************************
 //��������void AT93CXX_SPI_PORT_INIT( void )
 //�����������
@@ -133,14 +145,8 @@ unsigned short AT93CXX_Read_Data(unsigned short addr) {
 	
 	AT93CXX_SCS_H;
 	
-	
-#if MEM_ORG
-	//16λ���ݴ洢
-	address = ((unsigned short)(AT93CXX_READ | 0x04) << 8) | addr;
-#else
-	//8λ���ݴ洢
-	address = ((unsigned short)(AT93CXX_READ | 0x04) << 9) | addr;
-#endif
+
+	address = AT93CXX__MAKE_ADDR(AT93CXX_READ, addr);
 	
 	AT93CXX_SPI_Send_Word(address);
 	
@@ -173,13 +179,7 @@ void  AT93CXX_EN_Write(void) {
 	
 	AT93CXX_SCS_H;
 	
-#if MEM_ORG
-	//16λ����ģʽ
-	address = ((unsigned short)(AT93CXX_EWEN | 0x04) << 8) | 0xc0;
-#else
-	//8λ����ģʽ
-	address = ((unsigned short)(AT93CXX_EWEN | 0x04) << 9) | 0x180;
-#endif
+	address = AT93CXX__MAKE_ADDR_FIXED(AT93CXX_EWEN, 0xc0);
 	AT93CXX_SPI_Send_Word(address);
 	
 	AT93CXX_SCS_L;
@@ -200,15 +200,8 @@ void  AT93CXX_Erase_Write_Disable(void) {
 	
 	AT93CXX_SCS_H;
 	
-#if MEM_ORG
-	//16λ���ݴ洢
-	address = ((unsigned short)(AT93CXX_EWDS | 0x04) << 8);
-	
-#else
-	//8λ���ݴ洢
-	address = ((unsigned short)(AT93CXX_EWDS | 0x04) << 9);
-	
-#endif
+	address = AT93CXX__MAKE_ADDR_FIXED(AT93CXX_EWDS, 0);
+
 	AT93CXX_SPI_Send_Word(address);
 	
 	AT93CXX_SCS_L;
@@ -228,13 +221,7 @@ void  AT93CXX_Write_Data(unsigned short addr, unsigned short dat) {
 	
 	AT93CXX_SCS_H;
 	
-#if MEM_ORG
-	//16λ���ݴ洢
-	address = ((unsigned short)(AT93CXX_WRITE | 0x04) << 8) | addr;
-#else
-	//8λ���ݴ洢
-	address = ((unsigned short)(AT93CXX_WRITE | 0x04) << 9) | addr;
-#endif
+	address = AT93CXX__MAKE_ADDR(AT93CXX_WRITE, addr);
 	
 	AT93CXX_SPI_Send_Word(address);
 	
@@ -267,13 +254,7 @@ void AT93CXX_Write_All(unsigned short dat) {
 	unsigned short address;
 	AT93CXX_SCS_H;
 	
-#if MEM_ORG
-	//16λ���ݴ洢
-	address = ((unsigned short)(AT93CXX_WRAL | 0x04) << 8) | 0x40;
-#else
-	//8λ���ݴ洢
-	address = ((unsigned short)(AT93CXX_WRAL | 0x04) << 9) | 0x80;
-#endif
+	address = AT93CXX__MAKE_ADDR_FIXED(AT93CXX_WRAL, 0x40);
 	
 	AT93CXX_SPI_Send_Word(address);
 	
@@ -306,14 +287,7 @@ void AT93CXX_Erase_Dat(unsigned short addr) {
 	unsigned short address;
 	AT93CXX_SCS_H;
 	
-#if MEM_ORG
-	//16λ���ݴ洢
-	address = ((unsigned short)(AT93CXX_ERASE | 0x04) << 8) | addr;
-	
-#else
-	//8λ���ݴ洢
-	address = ((unsigned short)(AT93CXX_ERASE | 0x04) << 9) | addr;
-#endif
+	address = AT93CXX__MAKE_ADDR(AT93CXX_ERASE, addr);
 	
 	AT93CXX_SPI_Send_Word(address);
 	
@@ -337,13 +311,8 @@ void AT93CXX_Erase_All() {
 	unsigned short address;
 	AT93CXX_SCS_H;
 	
-#if MEM_ORG
-	//16λ���ݴ洢
-	address = ((unsigned short)(AT93CXX_ERAL | 0x04) << 8) | 0x80;
-#else
-	//8λ���ݴ洢
-	address = ((unsigned short)(AT93CXX_ERAL | 0x04) << 9) | 0x100;
-#endif
+	address = AT93CXX__MAKE_ADDR_FIXED(AT93CXX_ERAL, 0x80);
+
 	AT93CXX_SPI_Send_Word(address);
 	
 	AT93CXX_SCS_L;
