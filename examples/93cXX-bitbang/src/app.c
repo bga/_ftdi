@@ -47,8 +47,11 @@ typedef struct Chip {
 } Chip;
 
 struct Chip chipDb[] = {
-	{ "93c66", 8, 256 },
-	// { "93c86", 9, 2048 },
+	{ "93c46", 7, 128 },
+	{ "93c56", 8, 256 },
+	{ "93c66", 9, 512 },
+	{ "93c76", 10, 1024 },
+	{ "93c86", 11, 2048 },
 };
 
 #define FT232__CHECK_ERROR(fArg) EXIT__ERROR((fArg), "Generic ftdi error %i %s", (fArg), ftdi_get_error_string(ftdi))
@@ -114,13 +117,14 @@ int main(int argc, char* argv[]) {
 			break;
 		};
 	}
-	
 	struct Chip const* const chipPtr = &chipDb[chipIndex];
 
-	
 	if(chipIndex == ARRAY_SIZE(chipDb)) {
 		EXIT__ERROR(EXIT_FAILURE, "Unknown chip %s", chipIdStr);
 	};
+	
+	
+	AT93CXX__addrWidth = chipDb->addrBitWidth;
 	
 	unsigned readOffset;
 	if(sscanf(readOffsetStr, "%u", &readOffset) != 1) {
