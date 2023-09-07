@@ -130,7 +130,11 @@ uint16_t AT93CXX_SPI_Rec_Byte() {
 	return dat;
 }
 
-
+static void AT93CXX_WaitReadyState() {
+	AT93CXX_SCS_H;
+	while(AT93CXX_MISO == 0); //�ȴ��������
+	AT93CXX_SCS_L;
+}
 
 
 //****************************************************************
@@ -233,11 +237,7 @@ void  AT93CXX_Write_Data(uint16_t addr, uint16_t dat) {
 #endif
 	AT93CXX_SCS_L;
 	
-	AT93CXX_SCS_H;
-	while(AT93CXX_MISO == 0); //�ȴ�д���
-	AT93CXX_SCS_L;
-	
-	
+	AT93CXX_WaitReadyState();
 }
 
 
@@ -267,10 +267,8 @@ void AT93CXX_Write_All(uint16_t dat) {
 #endif
 	
 	AT93CXX_SCS_L;
-	
-	AT93CXX_SCS_H;
-	while(AT93CXX_MISO == 0); //�ȴ�д���
-	AT93CXX_SCS_L;
+
+	AT93CXX_WaitReadyState();
 }
 
 
@@ -292,10 +290,7 @@ void AT93CXX_Erase_Dat(uint16_t addr) {
 	
 	AT93CXX_SCS_L;
 	
-	AT93CXX_SCS_H;
-	while(AT93CXX_MISO == 0); //�ȴ��������
-	AT93CXX_SCS_L;
-	
+	AT93CXX_WaitReadyState();
 	
 }
 
@@ -316,10 +311,7 @@ void AT93CXX_Erase_All() {
 	
 	AT93CXX_SCS_L;
 	
-	AT93CXX_SCS_H;
-	while(AT93CXX_MISO == 0); //�ȴ��������
-	AT93CXX_SCS_L;
-	
+	AT93CXX_WaitReadyState();
 	
 }
 
