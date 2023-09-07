@@ -58,12 +58,12 @@ void AT93CXX_SPI_Send_Word(uint16_t dat) {
 
 
 //*********************************************************
-//��������void AT93CXX_SPI_Send_Byte(unsigned char dat)
+//��������void AT93CXX_SPI_Send_Byte(uint8_t dat)
 //������������͵�8bit����
 //�����������
 //���ܣ�ͨ��SPI�ӿڷ���8bit����
 //*********************************************************
-void AT93CXX_SPI_Send_Byte(unsigned char dat) {
+void AT93CXX_SPI_Send_Byte(uint8_t dat) {
 	uint16_t i;
 	for(i = 0; i != 8; i++) {
 		if(dat & 0x80) {
@@ -91,7 +91,7 @@ void AT93CXX_SPI_Send_Byte(unsigned char dat) {
 //*********************************************************
 uint16_t AT93CXX_SPI_Rec_Word() {
 	uint16_t dat = 0;
-	unsigned char i;
+	uint8_t i;
 	
 	for(i = 0; i != 16; i++) {
 		dat <<= 1;
@@ -115,8 +115,8 @@ uint16_t AT93CXX_SPI_Rec_Word() {
 //���ܣ�ͨ��SPI�ӿڽ���8bit����
 //*********************************************************
 uint16_t AT93CXX_SPI_Rec_Byte() {
-	unsigned char dat = 0;
-	unsigned char i;
+	uint8_t dat = 0;
+	uint8_t i;
 	
 	for(i = 0; i != 8; i++) {
 		dat <<= 1;
@@ -229,7 +229,7 @@ void  AT93CXX_Write_Data(uint16_t addr, uint16_t dat) {
 	AT93CXX_SPI_Send_Word(dat);
 #else
 	//8λ���ݴ洢
-	AT93CXX_SPI_Send_Byte((unsigned char)dat);
+	AT93CXX_SPI_Send_Byte((uint8_t)dat);
 #endif
 	AT93CXX_SCS_L;
 	
@@ -263,7 +263,7 @@ void AT93CXX_Write_All(uint16_t dat) {
 	
 #else
 	//8λ���ݴ洢
-	AT93CXX_SPI_Send_Byte((unsigned char)dat);
+	AT93CXX_SPI_Send_Byte((uint8_t)dat);
 #endif
 	
 	AT93CXX_SCS_L;
