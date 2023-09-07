@@ -2,7 +2,6 @@
 #include "at93c66.h"
 #include "at93c66-cfg.h"
 
-#include <stdio.h>
 
 unsigned AT93CXX__addrWidth;
 
