@@ -7,12 +7,12 @@
 unsigned AT93CXX__addrWidth;
 
 #if MEM_ORG
-	#define AT93CXX__MAKE_ADDR(cmdArg, addrArg) (((unsigned short)((cmdArg) | 0x04) << (AT93CXX__addrWidth - 1)) | (addrArg))
-	#define AT93CXX__MAKE_ADDR_FIXED(cmdArg, addrArg) (((unsigned short)((cmdArg) | 0x04) << (AT93CXX__addrWidth - 1)) | ((addrArg) << 1))
+	#define AT93CXX__MAKE_ADDR(cmdArg, addrArg) (((uint16_t)((cmdArg) | 0x04) << (AT93CXX__addrWidth - 1)) | (addrArg))
+	#define AT93CXX__MAKE_ADDR_FIXED(cmdArg, addrArg) (((uint16_t)((cmdArg) | 0x04) << (AT93CXX__addrWidth - 1)) | ((addrArg) << 1))
 	
 #else
-	#define AT93CXX__MAKE_ADDR(cmdArg, addrArg) (((unsigned short)((cmdArg) | 0x04) << (AT93CXX__addrWidth - 0)) | (addrArg))
-	#define AT93CXX__MAKE_ADDR_FIXED(cmdArg, addrArg) (((unsigned short)((cmdArg) | 0x04) << (AT93CXX__addrWidth - 0)) | (addrArg))
+	#define AT93CXX__MAKE_ADDR(cmdArg, addrArg) (((uint16_t)((cmdArg) | 0x04) << (AT93CXX__addrWidth - 0)) | (addrArg))
+	#define AT93CXX__MAKE_ADDR_FIXED(cmdArg, addrArg) (((uint16_t)((cmdArg) | 0x04) << (AT93CXX__addrWidth - 0)) | (addrArg))
 #endif
 
 
@@ -32,13 +32,13 @@ void AT93CXX_SPI_PORT_INIT(void) {
 
 
 //*********************************************************
-//��������void AT93CXX_SPI_Send_Word(unsigned short dat)
+//��������void AT93CXX_SPI_Send_Word(uint16_t dat)
 //������������͵�16bit����
 //�����������
 //���ܣ�ͨ��SPI�ӿڷ���16bit����
 //*********************************************************
-void AT93CXX_SPI_Send_Word(unsigned short dat) {
-	unsigned short i;
+void AT93CXX_SPI_Send_Word(uint16_t dat) {
+	uint16_t i;
 	for(i = 0; i != 16; i++) {
 		if(dat & 0x8000) {
 			AT93CXX_MOSI_H;
@@ -65,7 +65,7 @@ void AT93CXX_SPI_Send_Word(unsigned short dat) {
 //���ܣ�ͨ��SPI�ӿڷ���8bit����
 //*********************************************************
 void AT93CXX_SPI_Send_Byte(unsigned char dat) {
-	unsigned short i;
+	uint16_t i;
 	for(i = 0; i != 8; i++) {
 		if(dat & 0x80) {
 			AT93CXX_MOSI_H;
@@ -85,13 +85,13 @@ void AT93CXX_SPI_Send_Byte(unsigned char dat) {
 
 
 //*********************************************************
-//��������unsigned short AT93CXX_SPI_Rec_Word( )
+//��������uint16_t AT93CXX_SPI_Rec_Word( )
 //�����������
 //���������16bit����
 //���ܣ�ͨ��SPI�ӿڽ���16bit����
 //*********************************************************
-unsigned short AT93CXX_SPI_Rec_Word() {
-	unsigned short dat = 0;
+uint16_t AT93CXX_SPI_Rec_Word() {
+	uint16_t dat = 0;
 	unsigned char i;
 	
 	for(i = 0; i != 16; i++) {
@@ -110,12 +110,12 @@ unsigned short AT93CXX_SPI_Rec_Word() {
 
 
 //*********************************************************
-//��������unsigned short AT93CXX_SPI_Rec_Byte( )
+//��������uint16_t AT93CXX_SPI_Rec_Byte( )
 //�����������
 //���������8bit����
 //���ܣ�ͨ��SPI�ӿڽ���8bit����
 //*********************************************************
-unsigned short AT93CXX_SPI_Rec_Byte() {
+uint16_t AT93CXX_SPI_Rec_Byte() {
 	unsigned char dat = 0;
 	unsigned char i;
 	
@@ -135,13 +135,13 @@ unsigned short AT93CXX_SPI_Rec_Byte() {
 
 
 //****************************************************************
-//��������unsigned short AT93CXX_Read_Data(unsigned short addr)
+//��������uint16_t AT93CXX_Read_Data(uint16_t addr)
 //�����������ַ
 //���������16bit����
 //���ܣ���ȡAT93CXXָ����ַ������
 //****************************************************************
-unsigned short AT93CXX_Read_Data(unsigned short addr) {
-	unsigned short address;
+uint16_t AT93CXX_Read_Data(uint16_t addr) {
+	uint16_t address;
 	
 	AT93CXX_SCS_H;
 	
@@ -175,7 +175,7 @@ unsigned short AT93CXX_Read_Data(unsigned short addr) {
 //���ܣ�ʹ��д�����Ͳ�������
 //****************************************************************
 void  AT93CXX_EN_Write(void) {
-	unsigned short address;
+	uint16_t address;
 	
 	AT93CXX_SCS_H;
 	
@@ -196,7 +196,7 @@ void  AT93CXX_EN_Write(void) {
 //���ܣ���ֹд�����Ͳ�������
 //****************************************************************
 void  AT93CXX_Erase_Write_Disable(void) {
-	unsigned short address;
+	uint16_t address;
 	
 	AT93CXX_SCS_H;
 	
@@ -211,13 +211,13 @@ void  AT93CXX_Erase_Write_Disable(void) {
 
 
 //**************************************************************************
-//��������void  AT93CXX_Write_Data( unsigned short addr,unsigned short dat )
+//��������void  AT93CXX_Write_Data( uint16_t addr,uint16_t dat )
 //�����������ַ������
 //�����������
 //���ܣ���ָ����ַд������
 //****************************************************************************
-void  AT93CXX_Write_Data(unsigned short addr, unsigned short dat) {
-	unsigned short address;
+void  AT93CXX_Write_Data(uint16_t addr, uint16_t dat) {
+	uint16_t address;
 	
 	AT93CXX_SCS_H;
 	
@@ -245,13 +245,13 @@ void  AT93CXX_Write_Data(unsigned short addr, unsigned short dat) {
 
 
 //**************************************************************************
-//��������void AT93CXX_Write_All( unsigned short dat)
+//��������void AT93CXX_Write_All( uint16_t dat)
 //�������������
 //�����������
 //���ܣ������е�ַд��̶�����
 //****************************************************************************
-void AT93CXX_Write_All(unsigned short dat) {
-	unsigned short address;
+void AT93CXX_Write_All(uint16_t dat) {
+	uint16_t address;
 	AT93CXX_SCS_H;
 	
 	address = AT93CXX__MAKE_ADDR_FIXED(AT93CXX_WRAL, 0x40);
@@ -278,13 +278,13 @@ void AT93CXX_Write_All(unsigned short dat) {
 
 
 //**************************************************************************
-//��������void AT93CXX_Erase_Dat( unsigned short addr)
+//��������void AT93CXX_Erase_Dat( uint16_t addr)
 //�����������ַ
 //�����������
 //���ܣ�����ָ����ַ����
 //****************************************************************************
-void AT93CXX_Erase_Dat(unsigned short addr) {
-	unsigned short address;
+void AT93CXX_Erase_Dat(uint16_t addr) {
+	uint16_t address;
 	AT93CXX_SCS_H;
 	
 	address = AT93CXX__MAKE_ADDR(AT93CXX_ERASE, addr);
@@ -308,7 +308,7 @@ void AT93CXX_Erase_Dat(unsigned short addr) {
 //���ܣ��������е�ַ����
 //****************************************************************************
 void AT93CXX_Erase_All() {
-	unsigned short address;
+	uint16_t address;
 	AT93CXX_SCS_H;
 	
 	address = AT93CXX__MAKE_ADDR_FIXED(AT93CXX_ERAL, 0x80);

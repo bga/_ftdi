@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stdint.h>
+
 
 #define AT93CXX_READ    0x02		   //¶Á²Ù×÷
 
