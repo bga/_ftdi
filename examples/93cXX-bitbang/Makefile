@@ -13,6 +13,8 @@
 # limitations under the License.
 
 
+TEMP ?= /tmp
+
 space :=
 space +=
 pathToName = $(subst /,_,$(subst $(space),-,$1))
@@ -20,7 +22,7 @@ pathToName = $(subst /,_,$(subst $(space),-,$1))
 SELF_PATH := $(abspath $(lastword $(MAKEFILE_LIST)))
 PROJECT = $(call pathToName,$(dir $(SELF_PATH)))
 
-TARGET_EXEC ?= $(PROJECT).exe
+TARGET_EXEC ?= $(PROJECT)
 
 ARCH ?= i386
 PLATFORM ?= windows
@@ -44,8 +46,10 @@ CPPFLAGS += -fPIC
 # CPPFLAGS += -o .obj/$(@F)
 CPPFLAGS += -fdollars-in-identifiers
 
-ifneq "$(PLATFORM)" 'linux'
-	CPPFLAGS += -D_WIN32 
+ifeq "$(PLATFORM)" 'windows'
+	TARGET_EXEC := $(TARGET_EXEC).exe
+	CPPFLAGS += -D_WIN32
+	LDFLAGS += -mwindows
 endif
 
 ifdef DEBUG
