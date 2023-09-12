@@ -24,20 +24,30 @@
 
 extern unsigned AT93CXX__addrWidth;
 
+typedef uint_fast16_t AT93CXX__Addr;
+typedef uint_fast16_t AT93CXX__AddrStore;
+
+#if MEM_ORG
+	typedef uint_fast16_t AT93CXX__Data;
+	typedef uint16_t AT93CXX__DataStore;
+#else
+	typedef uint_fast8_t AT93CXX__Data;
+	typedef uint8_t AT93CXX__DataStore;
+#endif
 
 extern void AT93CXX_SPI_PORT_INIT(void);        //AT93CXX端口初始化
 
-extern unsigned short AT93CXX_Read_Data(unsigned short addr);	   //读AT93CXX指定地址的数据
+extern AT93CXX__Data AT93CXX_Read_Data(AT93CXX__Addr addr);	   //读AT93CXX指定地址的数据
 
 extern void  AT93CXX_EN_Write(void);							     //AT93CXX写使能
 
 extern void  AT93CXX_Erase_Write_Disable(void);				     //AT93CXX禁止写，擦除操作
 
-extern void  AT93CXX_Write_Data(unsigned short addr, unsigned short dat);	//往AT93CXX指定地址写入数据
+extern void  AT93CXX_Write_Data(AT93CXX__Addr addr, AT93CXX__Data dat);	//往AT93CXX指定地址写入数据
 
-extern void AT93CXX_Write_All(unsigned short dat);					//往所有地址写入固定数据
+extern void AT93CXX_Write_All(AT93CXX__Data dat);					//往所有地址写入固定数据
 
-extern void AT93CXX_Erase_Dat(unsigned short addr);				//擦除固定地址的数据
+extern void AT93CXX_Erase_Dat(AT93CXX__Addr addr);				//擦除固定地址的数据
 
 extern void AT93CXX_Erase_All(void);								//整片擦除
 

@@ -27,7 +27,6 @@ const char help[] = (""
 );
 
 #define APP__TRACE(...) do { fprintf(stderr, __VA_ARGS__); fprintf(stderr, "\n"); } while(0) 
-#define debug(...) do { fprintf(stderr, __VA_ARGS__); fprintf(stderr, "\n"); } while(0) 
 #define EXIT__ERROR(exitCodeArg, ...) do { fprintf(stderr, __VA_ARGS__); fprintf(stderr, "\n");	exit((exitCodeArg)); } while(0) 
 
 int APP__GETENV_OR_DEFAULT__INT__impl(char const* name, int defaultV) {
@@ -62,12 +61,14 @@ uint8_t ft232_byte_old = 0;
 uint8_t ft232_read() {
 	uint8_t ret;
 	int f = ftdi_read_pins(ftdi, &ret);
+	debug("r %u", (unsigned)ret);
 	if(f < 0) FT232__CHECK_ERROR(f);
 	return ret;
 }
 void ft232_write() {
 	if(ft232_byte_old == ft232_byte) return;
 	uint8_t b = ft232_byte;
+	debug("w %u", (unsigned)b);
 	int f = ftdi_write_data(ftdi, &b, 1);
 	ft232_byte_old = ft232_byte;
 	if(f != 1) FT232__CHECK_ERROR(f);
@@ -124,7 +125,8 @@ int main(int argc, char* argv[]) {
 	};
 	
 	
-	AT93CXX__addrWidth = chipDb->addrBitWidth;
+	AT93CXX__addrWidth = chipPtr->addrBitWidth;
+	debug("chipPtr->addrBitWidth = %u", (unsigned)chipPtr->addrBitWidth);
 	
 	unsigned readOffset;
 	if(sscanf(readOffsetStr, "%u", &readOffset) != 1) {
@@ -155,18 +157,18 @@ int main(int argc, char* argv[]) {
 	if(0);
 	else if(strcmp(verbStr, "read") == 0) {
 		AT93CXX_SPI_PORT_INIT();
-		for(size_t i = readOffset; i < readEnd; i += 1) {
+		for(size_t i = readOffset; i < readEnd; i += sizeof(AT93CXX__DataStore)) {
 			APP__TRACE("reading address %u", (unsigned)i);
-			uint8_t byte = AT93CXX_Read_Data(i);
-			fwrite(&byte, 1, 1, stdout);
+			AT93CXX__Data byte = AT93CXX_Read_Data(i);
+			fwrite(&byte, 1, sizeof(AT93CXX__DataStore), stdout);
 		}
 	}
 	else if(strcmp(verbStr, "write") == 0) {
 		AT93CXX_SPI_PORT_INIT();
 		AT93CXX_EN_Write();
-		uint8_t byte;
-		for(size_t i = readOffset; i < readEnd; i += 1) {
-			fread(&byte, 1, 1, stdin);
+		AT93CXX__Data byte;
+		for(size_t i = readOffset; i < readEnd; i += sizeof(AT93CXX__DataStore)) {
+			fread(&byte, 1, sizeof(AT93CXX__DataStore), stdin);
 			APP__TRACE("writing address %u", (unsigned)i);
 			AT93CXX_Write_Data(i, byte);
 		}
@@ -179,8 +181,8 @@ int main(int argc, char* argv[]) {
 			AT93CXX_Erase_All();
 		}
 		else {
-			uint8_t byte;
-			for(size_t i = readOffset; i < readEnd; i += 1) {
+			AT93CXX__Data byte;
+			for(size_t i = readOffset; i < readEnd; i += sizeof(AT93CXX__DataStore)) {
 				APP__TRACE("erasing address %u", (unsigned)i);
 				AT93CXX_Erase_Dat(i);
 			}
@@ -190,18 +192,18 @@ int main(int argc, char* argv[]) {
 		APP__TRACE("Warning: Fillig all requires VCC=5v+-10%%");
 		AT93CXX_SPI_PORT_INIT();
 		AT93CXX_EN_Write();
-		uint8_t byte;
-		fread(&byte, 1, 1, stdin);
+		AT93CXX__Data byte;
+		fread(&byte, 1, sizeof(AT93CXX__DataStore), stdin);
 		APP__TRACE("filling all memory with %u", (unsigned)byte);
 		AT93CXX_Write_All(byte);
 	}
 	else if(strcmp(verbStr, "verify") == 0) {
 		AT93CXX_SPI_PORT_INIT();
-		uint8_t byte;
-		for(size_t i = readOffset; i < readEnd; i += 1) {
-			fread(&byte, 1, 1, stdin);
+		AT93CXX__Data byte;
+		for(size_t i = readOffset; i < readEnd; i += sizeof(AT93CXX__DataStore)) {
+			fread(&byte, 1, sizeof(AT93CXX__DataStore), stdin);
 			APP__TRACE("reading address %u", (unsigned)i);
-			uint8_t byte2 = AT93CXX_Read_Data(i);
+			AT93CXX__Data byte2 = AT93CXX_Read_Data(i);
 			if(byte != byte2) {
 				APP__TRACE("verify failed at address %u, got %u, expected %u", (unsigned)i, (unsigned)byte2, (unsigned)byte);
 				retval = EXIT_FAILURE;
