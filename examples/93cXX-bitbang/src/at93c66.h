@@ -19,8 +19,9 @@
 
 
 
-#define MEM_ORG         0              //存储器的数据位宽，0为8位，1为16位  与硬件引脚ORG对应
-
+#ifndef MEM_ORG
+	#define MEM_ORG         0              //存储器的数据位宽，0为8位，1为16位  与硬件引脚ORG对应
+#endif
 
 extern unsigned AT93CXX__addrWidth;
 

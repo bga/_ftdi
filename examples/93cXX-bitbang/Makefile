@@ -71,6 +71,10 @@ LDFLAGS += $(shell pkg-config --libs libftdi1)
 
 # all: app
 
+$(TARGET_EXEC)-w:
+	$(MAKE) TARGET_EXEC=$(TARGET_EXEC)-w TEMP=$(TEMP)/w PLATFORM=$(PLATFORM) CPPFLAGS=-DMEM_ORG=1 clean
+	$(MAKE) TARGET_EXEC=$(TARGET_EXEC)-w TEMP=$(TEMP)/w PLATFORM=$(PLATFORM) CPPFLAGS=-DMEM_ORG=1 $(TARGET_EXEC)-w
+
 $(TARGET_EXEC): $(OBJS)
 	$(CC) $(OBJS) -o "$@" $(LDFLAGS)
 
