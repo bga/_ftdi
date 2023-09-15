@@ -27,6 +27,7 @@ Examples
 
 TODO
 - ~~support all 93cXX~~
+- ~~support word mode~~
 
 Build for linux
 
