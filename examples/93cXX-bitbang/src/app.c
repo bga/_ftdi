@@ -128,9 +128,14 @@ int main(int argc, char* argv[]) {
 	AT93CXX__addrWidth = chipPtr->addrBitWidth;
 	debug("chipPtr->addrBitWidth = %u", (unsigned)chipPtr->addrBitWidth);
 	
+	debug("Internal align %u bytes", (unsigned)sizeof(AT93CXX__DataStore));
+	
 	unsigned readOffset;
 	if(sscanf(readOffsetStr, "%u", &readOffset) != 1) {
 		EXIT__ERROR(EXIT_FAILURE, "Unable to parse readOff t %s,", readOffsetStr);
+	};
+	if(readOffset % sizeof(AT93CXX__DataStore) != 0) {
+		EXIT__ERROR(EXIT_FAILURE, "readOffset %s should be aligined", readOffsetStr);
 	};
 
 	unsigned readSize;
@@ -139,6 +144,9 @@ int main(int argc, char* argv[]) {
 	}
 	else if(sscanf(readSizeStr, "%u", &readSize) != 1) {
 		EXIT__ERROR(EXIT_FAILURE, "Unable to parse readSize %s,", readSizeStr);
+	};
+	if(readSize % sizeof(AT93CXX__DataStore) != 0) {
+		EXIT__ERROR(EXIT_FAILURE, "readSize %s should be aligined", readSizeStr);
 	};
 	
 	const uint8_t portBitmask = _BV(AT93CXX_MOSI_BIT) | _BV(AT93CXX_SCK_BIT) | _BV(AT93CXX_SCS_BIT);
