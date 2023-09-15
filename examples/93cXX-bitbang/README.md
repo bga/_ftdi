@@ -26,7 +26,7 @@ Examples
 ```
 
 TODO
-- support all 93cXX
+- ~~support all 93cXX~~
 
 Build for linux
 
