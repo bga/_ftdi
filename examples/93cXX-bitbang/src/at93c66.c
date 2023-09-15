@@ -7,7 +7,7 @@ unsigned AT93CXX__addrWidth;
 
 #if MEM_ORG
 	#define AT93CXX__MAKE_ADDR(cmdArg, addrArg) (((uint_fast16_t)((cmdArg) | 0x04) << (AT93CXX__addrWidth - 1)) | (addrArg))
-	#define AT93CXX__MAKE_ADDR_FIXED(cmdArg, addrArg) (((uint_fast16_t)((cmdArg) | 0x04) << (AT93CXX__addrWidth - 1)) | BIT_SHIFT_LEFT((addrArg), (int)AT93CXX__addrWidth - 7))
+	#define AT93CXX__MAKE_ADDR_FIXED(cmdArg, addrArg) (((uint_fast16_t)((cmdArg) | 0x04) << (AT93CXX__addrWidth - 1)) | BIT_SHIFT_LEFT((addrArg), (int)AT93CXX__addrWidth - 9))
 	
 #else
 	#define AT93CXX__MAKE_ADDR(cmdArg, addrArg) (((uint_fast16_t)((cmdArg) | 0x04) << (AT93CXX__addrWidth - 0)) | (addrArg))
