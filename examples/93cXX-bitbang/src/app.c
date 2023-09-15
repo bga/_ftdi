@@ -118,12 +118,12 @@ int main(int argc, char* argv[]) {
 			break;
 		};
 	}
-	struct Chip const* const chipPtr = &chipDb[chipIndex];
 
 	if(chipIndex == ARRAY_SIZE(chipDb)) {
 		EXIT__ERROR(EXIT_FAILURE, "Unknown chip %s", chipIdStr);
 	};
 	
+	struct Chip const* const chipPtr = &chipDb[chipIndex];
 	
 	AT93CXX__addrWidth = chipPtr->addrBitWidth;
 	debug("chipPtr->addrBitWidth = %u", (unsigned)chipPtr->addrBitWidth);
