@@ -27,3 +27,35 @@ Examples
 
 TODO
 - support all 93cXX
+
+Build for linux
+
+```
+	make TARGET_EXEC=93cXX PLATFORM=linux 93cXX
+	make TARGET_EXEC=93cXX PLATFORM=linux 93cXX-w
+```
+
+Build for windows
+
+```
+	make TARGET_EXEC=93cXX PLATFORM=windows 93cXX
+	make TARGET_EXEC=93cXX PLATFORM=windows 93cXX-w
+```
+
+Testing in byte mode (ORG = GND)
+
+```
+	make TARGET_EXEC=93cXX PLATFORM=linux test-read
+	make TARGET_EXEC=93cXX PLATFORM=linux test-write
+	make TARGET_EXEC=93cXX PLATFORM=linux test-verify
+	make TARGET_EXEC=93cXX PLATFORM=linux test # write + verify
+```
+
+Testing in word mode(ORG = VCC)
+
+```
+	make TARGET_EXEC=93cXX-w PLATFORM=linux test-read
+	make TARGET_EXEC=93cXX-w PLATFORM=linux test-write
+	make TARGET_EXEC=93cXX-w PLATFORM=linux test-verify
+	make TARGET_EXEC=93cXX-w PLATFORM=linux test # write + verify
+```
