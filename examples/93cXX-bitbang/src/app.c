@@ -159,7 +159,7 @@ int main(int argc, char* argv[]) {
 		AT93CXX_SPI_PORT_INIT();
 		for(size_t i = readOffset; i < readEnd; i += sizeof(AT93CXX__DataStore)) {
 			APP__TRACE("reading address %u", (unsigned)i);
-			AT93CXX__Data byte = AT93CXX_Read_Data(i);
+			AT93CXX__Data byte = AT93CXX_Read_Data(AT93CXX__ByteAddrToAddr(i));
 			fwrite(&byte, 1, sizeof(AT93CXX__DataStore), stdout);
 		}
 	}
@@ -170,7 +170,7 @@ int main(int argc, char* argv[]) {
 		for(size_t i = readOffset; i < readEnd; i += sizeof(AT93CXX__DataStore)) {
 			fread(&byte, 1, sizeof(AT93CXX__DataStore), stdin);
 			APP__TRACE("writing address %u", (unsigned)i);
-			AT93CXX_Write_Data(i, byte);
+			AT93CXX_Write_Data(AT93CXX__ByteAddrToAddr(i), byte);
 		}
 	}
 	else if(strcmp(verbStr, "erase") == 0) {
@@ -184,7 +184,7 @@ int main(int argc, char* argv[]) {
 			AT93CXX__Data byte;
 			for(size_t i = readOffset; i < readEnd; i += sizeof(AT93CXX__DataStore)) {
 				APP__TRACE("erasing address %u", (unsigned)i);
-				AT93CXX_Erase_Dat(i);
+				AT93CXX_Erase_Dat(AT93CXX__ByteAddrToAddr(i));
 			}
 		}
 	}
@@ -203,7 +203,7 @@ int main(int argc, char* argv[]) {
 		for(size_t i = readOffset; i < readEnd; i += sizeof(AT93CXX__DataStore)) {
 			fread(&byte, 1, sizeof(AT93CXX__DataStore), stdin);
 			APP__TRACE("reading address %u", (unsigned)i);
-			AT93CXX__Data byte2 = AT93CXX_Read_Data(i);
+			AT93CXX__Data byte2 = AT93CXX_Read_Data(AT93CXX__ByteAddrToAddr(i));
 			if(byte != byte2) {
 				APP__TRACE("verify failed at address %u, got %u, expected %u", (unsigned)i, (unsigned)byte2, (unsigned)byte);
 				retval = EXIT_FAILURE;

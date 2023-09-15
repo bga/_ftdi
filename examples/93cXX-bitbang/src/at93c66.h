@@ -35,6 +35,8 @@ typedef uint_fast16_t AT93CXX__AddrStore;
 	typedef uint8_t AT93CXX__DataStore;
 #endif
 
+#define AT93CXX__ByteAddrToAddr(addrArg) ((addrArg) / sizeof(AT93CXX__DataStore))
+
 extern void AT93CXX_SPI_PORT_INIT(void);        //AT93CXX端口初始化
 
 extern AT93CXX__Data AT93CXX_Read_Data(AT93CXX__Addr addr);	   //读AT93CXX指定地址的数据
