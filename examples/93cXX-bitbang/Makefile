@@ -94,16 +94,17 @@ $(BUILD_DIR)/%.cpp.o: %.cpp
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
 
 
+test_chop ?= 93c66
 test_range ?= 0 16
 test-data.bin:
 	dd if=/dev/urandom of=test-data.bin bs=1 count=256
 
 test-verify: test-data.bin
-	cat test-data.bin | ./$(TARGET_EXEC) 93c66 verify $(test_range)
+	cat test-data.bin | ./$(TARGET_EXEC) $(test_chip) verify $(test_range)
 test-read:
-	./$(TARGET_EXEC) 93c66 read $(test_range) > test-data.out.bin 
+	./$(TARGET_EXEC) $(test_chip) read $(test_range) > test-data.out.bin 
 test-write: test-data.bin
-	cat test-data.bin | ./$(TARGET_EXEC) 93c66 write $(test_range)
+	cat test-data.bin | ./$(TARGET_EXEC) $(test_chip) write $(test_range)
 
 test: test-write test-verify
 
