@@ -38,7 +38,6 @@ int APP__GETENV_OR_DEFAULT__INT__impl(char const* name, int defaultV) {
 }
 #define APP__GETENV_OR_DEFAULT__INT(nameArg) APP__GETENV_OR_DEFAULT__INT__impl(#nameArg, nameArg)
 
-
 typedef struct Chip {
 	char const* name;
 	unsigned addrBitWidth;
@@ -168,6 +167,7 @@ int main(int argc, char* argv[]) {
 		for(size_t i = readOffset; i < readEnd; i += sizeof(AT93CXX__DataStore)) {
 			APP__TRACE("reading address %u", (unsigned)i);
 			AT93CXX__Data byte = AT93CXX_Read_Data(AT93CXX__ByteAddrToAddr(i));
+			byte = UINT__BE_TO_H((AT93CXX__DataStore)byte);
 			fwrite(&byte, 1, sizeof(AT93CXX__DataStore), stdout);
 		}
 	}
@@ -177,6 +177,7 @@ int main(int argc, char* argv[]) {
 		AT93CXX__Data byte;
 		for(size_t i = readOffset; i < readEnd; i += sizeof(AT93CXX__DataStore)) {
 			fread(&byte, 1, sizeof(AT93CXX__DataStore), stdin);
+			byte = UINT__H_TO_BE((AT93CXX__DataStore)byte);
 			APP__TRACE("writing address %u", (unsigned)i);
 			AT93CXX_Write_Data(AT93CXX__ByteAddrToAddr(i), byte);
 		}
@@ -212,6 +213,7 @@ int main(int argc, char* argv[]) {
 			fread(&byte, 1, sizeof(AT93CXX__DataStore), stdin);
 			APP__TRACE("reading address %u", (unsigned)i);
 			AT93CXX__Data byte2 = AT93CXX_Read_Data(AT93CXX__ByteAddrToAddr(i));
+			byte2 = UINT__BE_TO_H((AT93CXX__DataStore)byte2);
 			if(byte != byte2) {
 				APP__TRACE("verify failed at address %u, got %u, expected %u", (unsigned)i, (unsigned)byte2, (unsigned)byte);
 				retval = EXIT_FAILURE;

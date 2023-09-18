@@ -1,6 +1,8 @@
 #pragma once
 
 #include <stdio.h>
+#include <stdint.h>
+#include <endian.h>
 
 #define ARRAY_SIZE(arr) ((size_t)(sizeof( (arr) ) / sizeof( (arr)[0] )))
 
@@ -21,3 +23,15 @@
 #define FT232__BITBANG__PIN__RI 7
 
 #define debug(...) do { fprintf(stderr, __VA_ARGS__); fprintf(stderr, "\n"); } while(0) 
+
+#define UINT__BE_TO_H(xArg) _Generic((xArg), \
+	uint8_t: (xArg), \
+	uint16_t: (uint16_t)be16toh((xArg)), \
+	uint32_t: (uint32_t)be32toh((xArg)) \
+)
+
+#define UINT__H_TO_BE(xArg) _Generic((xArg), \
+	uint8_t: (xArg), \
+	uint16_t: (uint16_t)htobe16((xArg)), \
+	uint32_t: (uint32_t)htobe32((xArg)) \
+)
