@@ -131,7 +131,7 @@ int main(int argc, char* argv[]) {
 	
 	unsigned readOffset;
 	if(sscanf(readOffsetStr, "%u", &readOffset) != 1) {
-		EXIT__ERROR(EXIT_FAILURE, "Unable to parse readOff t %s,", readOffsetStr);
+		EXIT__ERROR(EXIT_FAILURE, "Unable to parse readOffset %s,", readOffsetStr);
 	};
 	if(readOffset % sizeof(AT93CXX__DataStore) != 0) {
 		EXIT__ERROR(EXIT_FAILURE, "readOffset %s should be aligined", readOffsetStr);
